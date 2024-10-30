@@ -18,10 +18,11 @@ jobs:
         run: npm install
         working-directory: ./database
 
-      - name: Format check
+      - name: Lint check
         run: npm run lint
         working-directory: ./database
       
       - name: Build project
         run: npm run build
         working-directory: ./database
+      
