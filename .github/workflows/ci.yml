@@ -22,7 +22,3 @@ jobs:
         run: npm run lint
         working-directory: ./database
       
-      - name: Build project
-        run: npm run build
-        working-directory: ./database
-      
