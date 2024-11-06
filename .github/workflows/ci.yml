@@ -14,17 +14,9 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies in database
-        run: npm install
-        working-directory: ./database
-
       - name: Install dependencies in backend
         run: npm install
         working-directory: ./backend
-
-      - name: Lint check in database
-        run: npm run lint
-        working-directory: ./database
 
       - name: Lint check in backend
         run: npm run lint
