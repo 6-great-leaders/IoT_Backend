@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { getShoppingList } = require('../controllers/shoppingListController');
+const { getShoppingListFromAI, getShoppingList } = require('../controllers/shoppingListController');
 
-router.get('/', getShoppingList);
+router.post('/:id', getShoppingListFromAI);
+router.get('/:id', getShoppingList);
 
 module.exports = router;
