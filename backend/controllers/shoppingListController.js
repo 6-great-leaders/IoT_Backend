@@ -21,7 +21,8 @@ async function getShopArticlesForAI() {
   }
   catch (error) {
     console.error("Error fetching from DB:", error.response ? error.response.data : error.message);
-    res.status(500).json({ error: 'Failed to retrieve shopping list from database' });
+    throw (error);
+    // res.status(500).json({ error: 'Failed to retrieve shopping list from database' });
   }
 }
 
