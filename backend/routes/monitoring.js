@@ -3,7 +3,7 @@ const router = express.Router();
 const { getFleetStatus, nbActiveScanner } = require('../controllers/monitoringController');
 
 router.get('/fleet/', getFleetStatus);
-router.get('/bi/', nbActiveScanner);
+router.get('/nbactive', nbActiveScanner);
 
 
 module.exports = router;
