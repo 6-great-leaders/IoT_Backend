@@ -1,23 +1,49 @@
-name: Format Check
+name: CI with Custom Docker Image
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   lint:
     runs-on: ubuntu-latest
+    name: Run ESLint
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '14'  # Specify the Node.js version
 
-      - name: Install dependencies in backend
+      - name: Install dependencies
         run: npm install
-        working-directory: ./backend
 
-      - name: Lint check in backend
-        run: npm run lint
-        working-directory: ./backend
+      - name: Run ESLint
+        run: npm run lint  # Assuming you have an ESLint script in your package.json
+
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/6-great-leaders/iot_backend/backend:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Init terraform
+        run: terraform init
+
