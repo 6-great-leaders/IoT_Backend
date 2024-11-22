@@ -137,3 +137,8 @@ EXECUTE FUNCTION notify_nb_articles_ai_change();
 INSERT INTO shop_articles VALUES (1, 'jambon HERTA 6 tranches', 'HERTA', 300, 3.50, 1, 1);
 INSERT INTO shop_articles VALUES (2, 'jambon AUCHAN 6 tranches', 'AUCHAN', 300, 3.00, 1, 1);
 INSERT INTO shop_articles VALUES (3, 'jambon AUCHAN 6 tranches BIO', 'AUCHAN', 300, 3.50, 1, 1);
+
+
+INSERT INTO shop_articles VALUES (4, 'crème fraiche BIO 200g', 'AUCHAN', 300, 3.50, 1, 1);
+
+INSERT INTO shop_articles VALUES (5, 'crème fraiche 200g', 'AUCHAN', 300, 3.50, 1, 1);
