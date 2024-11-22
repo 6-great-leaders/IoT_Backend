@@ -3,10 +3,10 @@ name: CI with Custom Docker Image
 on:
   push:
     branches:
-      - main
+      - feature-512-deploy-backend
   pull_request:
     branches:
-      - main
+      - feature-512-deploy-backend
 
 jobs:
   lint:
