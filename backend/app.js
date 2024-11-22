@@ -50,30 +50,42 @@ dbClient.connect()
 
 dbClient.query('LISTEN turnover_change');
 dbClient.query('LISTEN active_scanners_change');
+dbClient.query('LISTEN nb_articles_change');
+dbClient.query('LISTEN nb_articles_ai_change');
 
 dbClient.on('notification', (msg) => {
-  const channel = msg.channel;
-  const payload = JSON.parse(msg.payload);
+    const channel = msg.channel;
+    const payload = JSON.parse(msg.payload);
 
-  if (channel === 'turnover_change') {
-      console.log('Notification Turnover:', payload);
-
-      // Diffuser le changement de turnover
-      wss.clients.forEach(client => {
-          if (client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify({ event: 'turnover_change', data: payload }));
-          }
-      });
-  } else if (channel === 'active_scanners_change') {
-      console.log('Notification Active Scanners:', payload);
-
-      // Diffuser le nombre de scanners actifs
-      wss.clients.forEach(client => {
-          if (client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify({ event: 'active_scanners_change', data: payload }));
-          }
-      });
-  }
+    if (channel === 'turnover_change') {
+        console.log('Turnover Change:', payload);
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ event: 'turnover_change', data: payload }));
+            }
+        });
+    } else if (channel === 'active_scanners_change') {
+        console.log('Active Scanners Change:', payload);
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ event: 'active_scanners_change', data: payload }));
+            }
+        });
+    } else if (channel === 'nb_articles_change') {
+        console.log('Number of Articles Change:', payload);
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ event: 'nb_articles_change', data: payload }));
+            }
+        });
+    } else if (channel === 'nb_articles_ai_change') {
+        console.log('Number of AI Articles Change:', payload);
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ event: 'nb_articles_ai_change', data: payload }));
+            }
+        });
+    }
 });
 
 // Démarrer le serveur
