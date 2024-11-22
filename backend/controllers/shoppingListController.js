@@ -29,11 +29,11 @@ async function getShopArticlesForAI() {
 
 async function insertListArticle(userId, article) {
   const query = `
-    INSERT INTO list_article (user_id, name, active, scanned, article_id)
-    VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO list_article (user_id, name, active, scanned, article_id, suggested)
+    VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING id
   `;
-  const values = [userId, article.name, true, false, article.id]; // Supposons que l'article est actif par défaut et non scanné
+  const values = [userId, article.name, true, false, article.id, article.suggested]; // Supposons que l'article est actif par défaut et non scanné
 
   try {
     // console.log(query)
@@ -82,7 +82,7 @@ async function getShoppingListFromAI(req, res) {
           {
             parts: [
               {
-                  text: `Generate a concise JSON response with just the ingredients from this product database : ${articles},${tag_request} the quantity and their prices for the following french recipe: ${recipe}. Format it as: {"ingredients": [{"id": int, "name": "ingredient", "price": "price", "quantity": "quantity"}]}. No additional explanations or notes.`
+                  text: `Generate a concise JSON response with just the ingredients from this product database : ${articles},${tag_request} the quantity and their prices for the following french recipe: ${recipe}. Format it as: {"ingredients": [{"id": int, "name": "ingredient", "price": "price", "quantity": "quantity", "suggested": false}]}. add one item that could be relevant to this list with the field "suggested" set to true for this particular item. No additional explanations or notes.`
               }
             ]
           }
