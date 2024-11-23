@@ -1,4 +1,4 @@
-name: CI with Custom Docker Image
+name: CI with Custom Docker Image for eslint and terraform deployment
 
 on:
   push:
@@ -11,22 +11,22 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    name: Run ESLint
-
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'  # Specify the Node.js version
+          node-version: '18'
 
-      - name: Install dependencies
+      - name: Install dependencies in backend
         run: npm install
+        working-directory: ./backend
 
-      - name: Run ESLint
-        run: npm run lint  # Assuming you have an ESLint script in your package.json
+      - name: Lint check in backend
+        run: npm run lint
+        working-directory: ./backend
 
   build:
     runs-on: ubuntu-latest
@@ -46,4 +46,5 @@ jobs:
 
       - name: Init terraform
         run: terraform init
+        working-directory: ./infra
 
