@@ -28,8 +28,12 @@ jobs:
         run: npm run lint
         working-directory: ./backend
 
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
+    env:
+      MY_VAR: "value"
+
     container:
       image: ghcr.io/6-great-leaders/iot_backend/backend:latest
 
@@ -42,7 +46,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.MY_SECRET_KEY }}
 
       - name: Init terraform
         run: terraform init
