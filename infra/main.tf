@@ -43,5 +43,13 @@ resource "google_compute_instance" "backend_instance" {
 
     # Lancer le conteneur Docker
     sudo docker run -d -p 5432:5432 my-postgres-db
+
+    cd "$REPO_DIR/backend"
+
+    # Construire l'image Docker
+    sudo docker build -t node-backend .
+
+    # Lancer le conteneur Docker
+    docker run -d -p 3000:3000 node-backend
   EOF
 }
