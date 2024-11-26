@@ -134,11 +134,28 @@ AFTER UPDATE OF nbArticlesAI ON scanner
 FOR EACH ROW
 EXECUTE FUNCTION notify_nb_articles_ai_change();
 
-INSERT INTO shop_articles VALUES (1, 'jambon HERTA 6 tranches', 'HERTA', 300, 3.50, 1, 1);
-INSERT INTO shop_articles VALUES (2, 'jambon AUCHAN 6 tranches', 'AUCHAN', 300, 3.00, 1, 1);
-INSERT INTO shop_articles VALUES (3, 'jambon AUCHAN 6 tranches BIO', 'AUCHAN', 300, 3.50, 1, 1);
 
+-- Réinitialiser la séquence (au cas où les valeurs sont déjà présentes)
+SELECT setval('shop_articles_id_seq', (SELECT MAX(id) FROM shop_articles));
 
-INSERT INTO shop_articles VALUES (4, 'crème fraiche BIO 200g', 'AUCHAN', 300, 3.50, 1, 1);
+-- Articles pour Pizza Bio Végétarienne
+INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
+('Pâte à Pizza BIO', 'BIO VILLAGE', 400, 1.50, 2, 3),
+('Sauce Tomate BIO', 'BIO VILLAGE', 200, 1.20, 3, 3),
+('Fromage Râpé BIO', 'BIO VILLAGE', 150, 2.50, 3, 4),
+('Champignons BIO', 'BIO VILLAGE', 250, 3.00, 4, 3);
 
-INSERT INTO shop_articles VALUES (5, 'crème fraiche 200g', 'AUCHAN', 300, 3.50, 1, 1);
+-- Articles pour Pizza Reine non Bio
+INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
+('Pâte à Pizza', 'HERTA', 400, 1.20, 2, 3),
+('Sauce Tomate', 'HEINZ', 200, 1.00, 3, 3),
+('Fromage Râpé', 'ENTREMONT', 150, 2.00, 3, 4),
+('Jambon', 'HERTA', 300, 3.50, 1, 1);
+
+-- Articles pour Mojito avec alcool
+INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
+('Rhum Blanc', 'HAVANA CLUB', 700, 15.00, 5, 2),
+('Feuilles de Menthe', 'BIO VILLAGE', 50, 1.50, 5, 1),
+('Citrons Vert BIO', 'BIO VILLAGE', 300, 2.50, 6, 1),
+('Sucre', 'BEGHIN SAY', 1000, 1.00, 4, 4),
+('Eau Pétillante', 'PERRIER', 1500, 1.20, 6, 2);
