@@ -58,6 +58,7 @@ jobs:
       - name: Terraform Apply
         env:
           PROJECT_ID: ${{ vars.PROJECT_ID }}
+          GCLOUD_KEY_BASE64: ${{ secrets.GCLOUD_SERVICE_KEY }}
         run: terraform apply -var="project_id=$PROJECT_ID" -var="json_file_path=/tmp/key.json" -auto-approve
         working-directory: ./infra
 
