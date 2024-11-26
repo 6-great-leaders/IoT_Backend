@@ -1,3 +1,16 @@
+terraform {
+  backend "gcs" {
+    bucket = "iot-backend-bucket"
+    prefix = "terraform/state"
+  }
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 6.7"
+    }
+  }
+}
+
 resource "google_compute_instance" "backend_instance" {
   name         = "backend-vm"
   machine_type = var.machine_type

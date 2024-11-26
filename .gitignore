@@ -22,4 +22,7 @@ build/
 coverage/
 
 # IAC
+*.tfvars
+*.hcl
+.terraform
 
