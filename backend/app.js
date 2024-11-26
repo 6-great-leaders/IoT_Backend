@@ -3,10 +3,12 @@ const express = require('express');
 const app = express();
 const shoppingListRoutes = require('./routes/shoppingList');
 const monitoring = require('./routes/monitoring');
+const scanner = require('./routes/scanner');
 
 app.use(express.json());
 app.use('/shopping-list', shoppingListRoutes);
 app.use('/monitoring', monitoring);
+app.use('/scanner', scanner);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
