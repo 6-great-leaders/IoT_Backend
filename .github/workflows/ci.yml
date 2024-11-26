@@ -54,4 +54,10 @@ jobs:
           PROJECT_ID: ${{ vars.PROJECT_ID }}
         run: terraform plan -var="project_id=$PROJECT_ID" -var="json_file_path=/tmp/key.json"
         working-directory: ./infra
+      
+      - name: Terraform Apply
+        env:
+          PROJECT_ID: ${{ vars.PROJECT_ID }}
+        run: terraform apply -var="project_id=$PROJECT_ID" -var="json_file_path=/tmp/key.json" -auto-approve
+        working-directory: ./infra
 
