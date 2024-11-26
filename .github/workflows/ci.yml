@@ -40,7 +40,7 @@ jobs:
 
       - name: Decode Google Cloud credentials
         env:
-          GCLOUD_KEY_BASE64: ${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
+          GCLOUD_KEY_BASE64: ${{ secrets.GCLOUD_SERVICE_KEY }}
         run: |
           echo "$GCLOUD_KEY_BASE64" | base64 -d > /tmp/key.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
