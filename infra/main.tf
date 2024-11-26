@@ -1,23 +1,34 @@
 resource "google_compute_instance" "backend_instance" {
   name         = "backend-vm"
-  machine_type = "e2-micro"  # Choose the instance type based on your requirements
+  machine_type = var.machine_type
   zone         = var.zone
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image = "debian-cloud/debian-12"
     }
   }
 
   network_interface {
     network       = "default"
-    access_config {}  # This enables external IP for the instance
+    access_config {}
   }
 
   metadata_startup_script = <<-EOF
     #!/bin/bash
+
+    # Mettre à jour les paquets et installer Docker
     sudo apt update
     sudo apt install -y docker.io
-    sudo docker run -d -p 80:3000 YOUR_IMAGE  # Replace YOUR_IMAGE with your Docker image
+
+    # Définir le répertoire du projet et se déplacer dedans
+    REPO_DIR="/home/ubuntu/IoT_Backend/"
+    cd "$REPO_DIR/database"
+
+    # Construire l'image Docker
+    sudo docker build -t my-postgres-db .
+
+    # Lancer le conteneur Docker
+    sudo docker run -d -p 5432:5432 my-postgres-db
   EOF
 }

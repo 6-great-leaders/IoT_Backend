@@ -50,6 +50,8 @@ jobs:
         working-directory: ./infra
       
       - name: Terraform Plan
-        run: terraform plan
+        env:
+          PROJECT_ID: ${{ vars.PROJECT_ID }}
+        run: terraform plan -var="project_id=$MY_VAR"
         working-directory: ./infra
 

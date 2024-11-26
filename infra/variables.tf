@@ -6,11 +6,17 @@ variable "project_id" {
 variable "region" {
   description = "GCP Region"
   type        = string
-  default     = "us-central1"
+  default     = "europe-west1"
 }
 
 variable "zone" {
   description = "GCP Zone"
   type        = string
-  default     = "us-central1-a"
+  default     = "europe-west1-b"
+}
+
+variable "machine_type" {
+  description = "GCP machine type"
+  type        = string
+  default     = "e2-micro"
 }
