@@ -1,4 +1,4 @@
-name: CI with Custom Docker Image for eslint and terraform deployment
+name: CI - Eslint and Terraform deployment
 
 on:
   push:
@@ -38,7 +38,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Decode Google Cloud credentials
+        env:
+          GCLOUD_KEY_BASE64: ${{ secrets.GCLOUD_SERVICE_KEY_BASE64 }}
+        run: |
+          echo "$GCLOUD_KEY_BASE64" | base64 -d > key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/key.json
+
       - name: Init terraform
         run: terraform init
+        working-directory: ./infra
+      
+      - name: Terraform Plan
+        run: terraform plan
         working-directory: ./infra
 
