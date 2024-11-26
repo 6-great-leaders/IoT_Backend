@@ -21,9 +21,9 @@ CREATE TABLE IF NOT EXISTS scanner (
   id SERIAL PRIMARY KEY,
   state VARCHAR(50), -- "ACTIVE", "IDLE", "ERROR", "OFF"
   list_id INTEGER, -- id of the groceries_list currently processed by the scanner
-  turnover FLOAT, -- the added price of all bought items
-  nbArticles INT, -- number of articles scanned
-  nbArticlesAI INT -- number of suggested articles scanned
+  turnover FLOAT DEFAULT 0, -- the added price of all bought items
+  nbArticles INT DEFAULT 0, -- number of articles scanned
+  nbArticlesAI INT DEFAULT 0 -- number of suggested articles scanned
 );
 
 CREATE TABLE IF NOT EXISTS log_scanner (
