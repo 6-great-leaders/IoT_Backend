@@ -52,6 +52,6 @@ jobs:
       - name: Terraform Plan
         env:
           PROJECT_ID: ${{ vars.PROJECT_ID }}
-        run: terraform plan -var="project_id=$PROJECT_ID"
+        run: terraform plan -var="project_id=$PROJECT_ID" -var="json_file_path=/tmp/key.json"
         working-directory: ./infra
 
