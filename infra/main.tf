@@ -47,7 +47,7 @@ resource "google_compute_instance" "backend_instance" {
     git switch feature-512-deploy-backend
 
     # Pulling github backend repository
-    git pull https://github.com/6-great-leaders/IoT_Backend.git
+    git pull
 
     # Make sure container doesn't block ports
     sudo docker container prune --force
