@@ -35,8 +35,10 @@ resource "google_compute_instance" "backend_instance" {
     sudo apt install -y docker.io
 
     # Cloning github backend repository
-    git clone https://github.com/6-great-leaders/IoT_Backend.git /home/debian/
+    git clone https://github.com/6-great-leaders/IoT_Backend.git
 
+    # To remove when merged into main
+    git switch feature-512-deploy-backend
 
     # Définir le répertoire du projet et se déplacer dedans
     REPO_DIR="/home/debian/IoT_Backend/"
@@ -54,7 +56,7 @@ resource "google_compute_instance" "backend_instance" {
     sudo docker build -t node-backend .
 
     # Lancer le conteneur Docker
-    docker run -d -p 3000:3000 node-backend
+    sudo docker run -d -p 3000:3000 node-backend
   EOF
 
   metadata = {
