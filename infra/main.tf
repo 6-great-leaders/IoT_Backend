@@ -49,6 +49,9 @@ resource "google_compute_instance" "backend_instance" {
     # To remove before merging into main !!
     git switch feature-512-deploy-backend
 
+    # Make sure container doesn't block ports
+    sudo docker container prune --force
+
     cd "$REPO_DIR/database"
     # Construire l'image Docker
     sudo docker build -t my-postgres-db .
