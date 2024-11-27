@@ -11,9 +11,6 @@ sudo apt update
 REPO_DIR="/home/debian/IoT_Backend/"
 cd "$REPO_DIR"
 
-# To remove before merging into main !!
-git switch feature-512-deploy-backend
-
 # Pulling github backend repository
 git pull
 
