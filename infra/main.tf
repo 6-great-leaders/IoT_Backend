@@ -34,6 +34,10 @@ resource "google_compute_instance" "backend_instance" {
     sudo apt update
     sudo apt install -y docker.io
 
+    # Cloning github backend repository
+    git clone https://github.com/6-great-leaders/IoT_Backend.git /home/debian/
+
+
     # Définir le répertoire du projet et se déplacer dedans
     REPO_DIR="/home/debian/IoT_Backend/"
     cd "$REPO_DIR/database"
