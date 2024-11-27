@@ -1,6 +1,7 @@
 variable "json_file_path" {
     description = "Path to the JSON file"
     type        = string
+    default     = "/tmp/key.json"
 }
 
 variable "project_id" {
