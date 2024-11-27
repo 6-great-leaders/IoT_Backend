@@ -28,18 +28,22 @@ jobs:
         run: npm run lint
         working-directory: ./backend
 
-  deploy: 
+  deploy:
     runs-on: ubuntu-latest
 
     container:
       image: hashicorp/terraform:latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Decode Google Cloud credentials
         env:
           GCLOUD_KEY_BASE64: ${{ secrets.GCLOUD_SERVICE_KEY }}
         run: |
           echo "$GCLOUD_KEY_BASE64" | base64 -d > /tmp/key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
       
       - name: Init terraform
         env:
