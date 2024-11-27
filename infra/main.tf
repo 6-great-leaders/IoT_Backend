@@ -43,11 +43,11 @@ resource "google_compute_instance" "backend_instance" {
     REPO_DIR="/home/debian/IoT_Backend/"
     cd "$REPO_DIR"
 
-    # Pulling github backend repository
-    git pull https://github.com/6-great-leaders/IoT_Backend.git
-
     # To remove before merging into main !!
     git switch feature-512-deploy-backend
+
+    # Pulling github backend repository
+    git pull https://github.com/6-great-leaders/IoT_Backend.git
 
     # Make sure container doesn't block ports
     sudo docker container prune --force
@@ -96,6 +96,20 @@ resource "google_compute_firewall" "allow_database" {
   allow {
     protocol = "tcp"
     ports    = ["5432"]
+  }
+
+  direction = "INGRESS"
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["backend"]
+}
+
+resource "google_compute_firewall" "allow_backend" {
+  name    = "allow-backend-access"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["3000"]
   }
 
   direction = "INGRESS"
