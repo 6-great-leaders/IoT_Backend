@@ -31,3 +31,9 @@ variable "machine_type" {
   type        = string
   default     = "e2-micro"
 }
+
+variable "instance_name" {
+  description = "GCP backend snapshot"
+  type        = string
+  default     = "snapshot-iot-backend-v1"
+}

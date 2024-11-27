@@ -11,6 +11,12 @@ terraform {
   }
 }
 
+# Data source to reference the custom backend image
+data "google_compute_image" custom_image {
+  name    = var.instance_name
+  project = var.project_id
+}
+
 resource "google_compute_instance" "backend_instance" {
   name         = "backend-vm"
   machine_type = var.machine_type
@@ -18,7 +24,7 @@ resource "google_compute_instance" "backend_instance" {
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-12"
+      image = data.google_compute_image.custom_image.self_link
     }
   }
 
