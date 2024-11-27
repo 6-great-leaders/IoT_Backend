@@ -32,18 +32,18 @@ resource "google_compute_instance" "backend_instance" {
 
     # Mettre à jour les paquets et installer Docker
     sudo apt update
-    sudo apt install -y docker.io
-
-    # Cloning github backend repository
-    git clone https://github.com/6-great-leaders/IoT_Backend.git
-
-    # To remove when merged into main
-    git switch feature-512-deploy-backend
 
     # Définir le répertoire du projet et se déplacer dedans
     REPO_DIR="/home/debian/IoT_Backend/"
-    cd "$REPO_DIR/database"
+    cd "$REPO_DIR"
 
+    # Pulling github backend repository
+    git pull https://github.com/6-great-leaders/IoT_Backend.git
+
+    # To remove before merging into main !!
+    git switch feature-512-deploy-backend
+
+    cd "$REPO_DIR/database"
     # Construire l'image Docker
     sudo docker build -t my-postgres-db .
 
