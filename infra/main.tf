@@ -35,7 +35,7 @@ resource "google_compute_instance" "backend_instance" {
     sudo apt install -y docker.io
 
     # Définir le répertoire du projet et se déplacer dedans
-    REPO_DIR="/home/ubuntu/IoT_Backend/"
+    REPO_DIR="/home/debian/IoT_Backend/"
     cd "$REPO_DIR/database"
 
     # Construire l'image Docker
@@ -53,33 +53,37 @@ resource "google_compute_instance" "backend_instance" {
     docker run -d -p 3000:3000 node-backend
   EOF
 
+  metadata = {
+    ssh-keys = "debian:${var.ssh_public_key}"
+  }
+
   tags         = ["backend"]
 }
 
 resource "google_compute_firewall" "allow_backend_http" {
   name    = "allow-backend-http"
-  network = "default" # Remplacez par le nom de votre réseau VPC si différent
+  network = "default"
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "443"] # Autoriser HTTP et HTTPS
+    ports    = ["80", "443"]
   }
 
   direction = "INGRESS"
-  source_ranges = ["0.0.0.0/0"] # Permet l'accès depuis n'importe quelle IP
-  target_tags   = ["backend"]  # Appliquez cette règle uniquement aux instances avec ce tag
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["backend"]
 }
 
 resource "google_compute_firewall" "allow_database" {
   name    = "allow-database-access"
-  network = "default" # Remplacez par le nom de votre réseau VPC si différent
+  network = "default"
 
   allow {
     protocol = "tcp"
-    ports    = ["5432"] # Port par défaut de PostgreSQL
+    ports    = ["5432"]
   }
 
   direction = "INGRESS"
-  source_ranges = ["192.168.1.0/24"] # Remplacez par les plages IP autorisées
-  target_tags   = ["backend"] # Appliquez cette règle uniquement aux instances avec ce tag
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["backend"]
 }

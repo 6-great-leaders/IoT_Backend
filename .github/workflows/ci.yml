@@ -55,14 +55,16 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
           PROJECT_ID: ${{ vars.PROJECT_ID }}
-        run: terraform plan -var="project_id=$PROJECT_ID"
+          SSH_KEY: ${{ vars.SSH_KEY }}
+        run: terraform plan -var="project_id=$PROJECT_ID" -var="ssh_public_key=$SSH_KEY"
         working-directory: ./infra
       
       - name: Terraform Apply
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
           PROJECT_ID: ${{ vars.PROJECT_ID }}
-        run: terraform apply -var="project_id=$PROJECT_ID" -auto-approve
+          SSH_KEY: ${{ vars.SSH_KEY }}
+        run: terraform apply -var="project_id=$PROJECT_ID" -var="ssh_public_key=$SSH_KEY" -auto-approve
         working-directory: ./infra
       
 

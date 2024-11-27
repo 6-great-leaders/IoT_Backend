@@ -4,6 +4,11 @@ variable "json_file_path" {
     default     = "/tmp/key.json"
 }
 
+variable "ssh_public_key" {
+  description = "allowed public key to access vm"
+  type        = string
+}
+
 variable "project_id" {
   description = "GCP Project ID"
   type        = string
