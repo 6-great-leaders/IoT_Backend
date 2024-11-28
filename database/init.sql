@@ -19,11 +19,12 @@ CREATE TABLE IF NOT EXISTS list_article (
 
 CREATE TABLE IF NOT EXISTS scanner (
   id SERIAL PRIMARY KEY,
-  state VARCHAR(50), -- "ACTIVE", "IDLE", "ERROR", "OFF"
-  list_id INTEGER, -- id of the groceries_list currently processed by the scanner
+  state VARCHAR(50) NOT NULL, -- "ACTIVE", "IDLE", "ERROR", "OFF"
+  list_id INTEGER DEFAULT NULL, -- id of the groceries_list currently processed by the scanner
   turnover FLOAT DEFAULT 0, -- the added price of all bought items
   nbArticles INT DEFAULT 0, -- number of articles scanned
-  nbArticlesAI INT DEFAULT 0 -- number of suggested articles scanned
+  nbArticlesAI INT DEFAULT 0, -- number of suggested articles scanned
+  last_healthcheck TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS log_scanner (
@@ -50,13 +51,16 @@ CREATE TABLE IF NOT EXISTS shop_articles (
 -- calcul du turnover pour chaque scanner
 CREATE OR REPLACE FUNCTION notify_turnover_change()
 RETURNS TRIGGER AS $$
+DECLARE
+    global_turnover INT;
 BEGIN
-    IF OLD.turnover IS DISTINCT FROM NEW.turnover THEN
-        PERFORM pg_notify(
-            'turnover_change', 
-            json_build_object('scanner_id', NEW.id, 'old_turnover', OLD.turnover, 'new_turnover', NEW.turnover)::text
-        );
-    END IF;
+    SELECT SUM(turnover) INTO global_turnover FROM scanner;
+
+    -- Envoyer une notification avec le turnover global
+    PERFORM pg_notify(
+        'global_turnover_change',
+        json_build_object('global_turnover', global_turnover)::text
+    );
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -92,17 +96,16 @@ EXECUTE FUNCTION notify_active_scanners();
 
 CREATE OR REPLACE FUNCTION notify_nb_articles_change()
 RETURNS TRIGGER AS $$
+DECLARE
+    total_articles INT;
 BEGIN
-    IF OLD.nbArticles IS DISTINCT FROM NEW.nbArticles THEN
-        PERFORM pg_notify(
-            'nb_articles_change',
-            json_build_object(
-                'scanner_id', NEW.id,
-                'old_value', OLD.nbArticles,
-                'new_value', NEW.nbArticles
-            )::text
-        );
-    END IF;
+    SELECT SUM(nbArticles) INTO total_articles FROM scanner;
+    PERFORM pg_notify(
+        'global_articles_change',
+        json_build_object(
+            'total_articles', total_articles
+        )::text
+    );
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -114,17 +117,18 @@ EXECUTE FUNCTION notify_nb_articles_change();
 
 CREATE OR REPLACE FUNCTION notify_nb_articles_ai_change()
 RETURNS TRIGGER AS $$
+DECLARE
+    total_ai_articles INT;
 BEGIN
-    IF OLD.nbArticlesAI IS DISTINCT FROM NEW.nbArticlesAI THEN
-        PERFORM pg_notify(
-            'nb_articles_ai_change',
-            json_build_object(
-                'scanner_id', NEW.id,
-                'old_value', OLD.nbArticlesAI,
-                'new_value', NEW.nbArticlesAI
-            )::text
-        );
-    END IF;
+    SELECT SUM(nbArticlesAI) INTO total_ai_articles FROM scanner;
+
+    PERFORM pg_notify(
+        'global_articles_ai_change',
+        json_build_object(
+            'total_ai_articles', total_ai_articles
+        )::text
+    );
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -159,3 +163,6 @@ INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
 ('Citrons Vert BIO', 'BIO VILLAGE', 300, 2.50, 6, 1),
 ('Sucre', 'BEGHIN SAY', 1000, 1.00, 4, 4),
 ('Eau Pétillante', 'PERRIER', 1500, 1.20, 6, 2);
+
+
+INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES ('Tomates', 'AUCHAN', 20, 1.00, 5, 2);
