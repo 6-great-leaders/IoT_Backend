@@ -1,6 +1,12 @@
-name: Format Check
+name: CI - Eslint and Terraform deployment
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   lint:
@@ -21,3 +27,44 @@ jobs:
       - name: Lint check in backend
         run: npm run lint
         working-directory: ./backend
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    container:
+      image: hashicorp/terraform:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Decode Google Cloud credentials
+        env:
+          GCLOUD_KEY_BASE64: ${{ secrets.GCLOUD_SERVICE_KEY }}
+        run: |
+          echo "$GCLOUD_KEY_BASE64" | base64 -d > /tmp/key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json
+      
+      - name: Init terraform
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
+        run: terraform init
+        working-directory: ./infra
+      
+      - name: Terraform Plan
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
+          PROJECT_ID: ${{ vars.PROJECT_ID }}
+          SSH_KEY: ${{ vars.SSH_KEY }}
+        run: terraform plan -var="project_id=$PROJECT_ID" -var="ssh_public_key=$SSH_KEY"
+        working-directory: ./infra
+      
+      - name: Terraform Apply
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
+          PROJECT_ID: ${{ vars.PROJECT_ID }}
+          SSH_KEY: ${{ vars.SSH_KEY }}
+        run: terraform apply -var="project_id=$PROJECT_ID" -var="ssh_public_key=$SSH_KEY" -auto-approve
+        working-directory: ./infra
+      
+
