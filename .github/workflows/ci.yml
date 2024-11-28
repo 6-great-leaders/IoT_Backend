@@ -3,10 +3,10 @@ name: CI - Eslint and Terraform deployment
 on:
   push:
     branches:
-      - feature-512-deploy-backend
+      - main
   pull_request:
     branches:
-      - feature-512-deploy-backend
+      - main
 
 jobs:
   lint:
