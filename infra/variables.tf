@@ -37,3 +37,9 @@ variable "instance_name" {
   type        = string
   default     = "snapshot-iot-backend-v1"
 }
+
+variable "regional_ip_name" {
+  description = "Name of the regional static IP"
+  type        = string
+  default     = "regional-ip-iot-backend"
+}

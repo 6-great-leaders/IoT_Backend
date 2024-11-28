@@ -11,6 +11,11 @@ terraform {
   }
 }
 
+data "google_compute_address" "regional_ip" {
+  name   = var.regional_ip_name
+  region = var.region
+}
+
 # Data source to reference the custom backend image
 data "google_compute_image" "custom_image" {
   name    = var.instance_name
@@ -30,7 +35,9 @@ resource "google_compute_instance" "backend_instance" {
 
   network_interface {
     network = "default"
-    access_config {}
+    access_config {
+      nat_ip = data.google_compute_address.regional_ip.address
+    }
   }
 
   metadata_startup_script = file("${path.module}/startup-script.sh")
