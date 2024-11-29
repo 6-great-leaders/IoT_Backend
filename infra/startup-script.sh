@@ -4,12 +4,14 @@ sleep 10
 
 echo "Startup script is running..." > /var/log/startup-script.log
 
-# Mettre à jour les paquets et installer Docker
 sudo apt update
 
-# Définir le répertoire du projet et se déplacer dedans
+# Define repertory of project and move in
 REPO_DIR="/home/debian/IoT_Backend/"
 cd "$REPO_DIR"
+
+# Configure Git to explicitly mark the directory as safe
+git config --global --add safe.directory /home/debian/IoT_Backend
 
 # Pulling github backend repository
 git pull
@@ -18,16 +20,12 @@ git pull
 sudo docker container prune --force
 
 cd "$REPO_DIR/database"
-# Construire l'image Docker
 sudo docker build -t my-postgres-db .
 
-# Lancer le conteneur Docker
 sudo docker run -d -p 5432:5432 my-postgres-db
 
 cd "$REPO_DIR/backend"
 
-# Construire l'image Docker
 sudo docker build -t node-backend .
 
-# Lancer le conteneur Docker
 sudo docker run -d -p 3000:3000 node-backend
