@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const app = express();
+app.use(cors());
 const shoppingListRoutes = require('./routes/shoppingList');
 const monitoring = require('./routes/monitoring');
 const scanner = require('./routes/scanner');
