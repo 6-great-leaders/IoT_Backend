@@ -83,7 +83,7 @@ resource "google_compute_firewall" "allow_backend" {
 
   allow {
     protocol = "tcp"
-    ports    = ["3000"]
+    ports    = ["4000"]
   }
 
   direction     = "INGRESS"
