@@ -19,13 +19,8 @@ git pull
 # Make sure container doesn't block ports
 sudo docker container prune --force
 
-cd "$REPO_DIR/database"
-sudo docker build -t my-postgres-db .
+# Clean up old containers
+sudo docker compose -f "$REPO_DIR/docker-compose.yaml" down
 
-sudo docker run -d -p 5432:5432 my-postgres-db
-
-cd "$REPO_DIR/backend"
-
-sudo docker build -t node-backend .
-
-sudo docker run -d -p 4000:4000 node-backend
+# Build and start the services in detached mode
+sudo docker compose -f "$REPO_DIR/docker-compose.yaml" up --build -d

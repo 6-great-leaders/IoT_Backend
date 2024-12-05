@@ -35,7 +35,7 @@ variable "machine_type" {
 variable "instance_name" {
   description = "GCP backend snapshot"
   type        = string
-  default     = "snapshot-iot-backend-v2"
+  default     = "snapshot-iot-backend-v4"
 }
 
 variable "regional_ip_name" {
