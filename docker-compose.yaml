@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "4000:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=6gl
+      - DB_PASSWORD=6gl
+      - DB_NAME=iot
+    networks:
+      - app-network
+
+  db:
+    build:
+      context: ./database
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: 6gl
+      POSTGRES_PASSWORD: 6gl
+      POSTGRES_DB: iot
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U 6gl -d iot"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge
