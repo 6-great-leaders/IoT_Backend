@@ -39,10 +39,9 @@ wss.on('connection', (ws) => {
     ws.send(JSON.stringify({ message: 'Connexion établie' }));
 });
 
-// Configuration de la base de données
 const dbClient = new Client({
   user: '6gl',
-  host: 'localhost',
+  host: 'db', // Use the service name defined in docker-compose
   database: 'iot',
   password: '6gl',
   port: 5432,

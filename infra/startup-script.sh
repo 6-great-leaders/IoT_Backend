@@ -28,4 +28,4 @@ cd "$REPO_DIR/backend"
 
 sudo docker build -t node-backend .
 
-sudo docker run -d -p 3000:3000 node-backend
+sudo docker run -d -p 4000:4000 node-backend
