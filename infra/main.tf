@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "iot-backend-bucket"
+    bucket = "iot-backend-bucket-new"
     prefix = "terraform/state"
   }
   required_providers {
