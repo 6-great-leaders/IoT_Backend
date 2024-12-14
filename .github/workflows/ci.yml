@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - fix/ci
   pull_request:
     branches:
       - main
+      - fix/ci
 
 jobs:
   lint:
@@ -56,7 +58,8 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
           PROJECT_ID: ${{ vars.PROJECT_ID }}
           SSH_KEY: ${{ vars.SSH_KEY }}
-        run: terraform plan -var="project_id=$PROJECT_ID" -var="ssh_public_key=$SSH_KEY"
+        run: |
+          terraform plan -var="project_id=$PROJECT_ID" -var="ssh_public_key=$SSH_KEY"
         working-directory: ./infra
       
       - name: Terraform Apply
