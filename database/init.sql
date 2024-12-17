@@ -166,3 +166,15 @@ INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
 
 
 INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES ('Tomates', 'AUCHAN', 20, 1.00, 5, 2);
+
+
+INSERT INTO scanner (id, state) VALUES (1, 'OFF');
+INSERT INTO scanner (id, state) VALUES (2, 'OFF');
+INSERT INTO scanner (id, state) VALUES (3, 'OFF');
+INSERT INTO scanner (id, state) VALUES (4, 'OFF');
+INSERT INTO scanner (id, state) VALUES (5, 'OFF');
+INSERT INTO scanner (id, state) VALUES (6, 'OFF');
+INSERT INTO scanner (id, state) VALUES (7, 'OFF');
+INSERT INTO scanner (id, state) VALUES (8, 'OFF');
+INSERT INTO scanner (id, state) VALUES (9, 'OFF');
+INSERT INTO scanner (id, state) VALUES (10, 'OFF');
