@@ -51,20 +51,20 @@ dbClient.connect()
     .then(() => console.log('Connecté à PostgreSQL'))
     .catch(err => console.error('Erreur de connexion PostgreSQL:', err));
 
-dbClient.query('LISTEN turnover_change');
 dbClient.query('LISTEN active_scanners_change');
-dbClient.query('LISTEN nb_articles_change');
-dbClient.query('LISTEN nb_articles_ai_change');
+dbClient.query('LISTEN global_turnover_change');
+dbClient.query('LISTEN global_articles_change');
+dbClient.query('LISTEN global_articles_ai_change');
 
 dbClient.on('notification', (msg) => {
     const channel = msg.channel;
     const payload = JSON.parse(msg.payload);
 
-    if (channel === 'turnover_change') {
+    if (channel === 'global_turnover_change') {
         console.log('Turnover Change:', payload);
         wss.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify({ event: 'turnover_change', data: payload }));
+                client.send(JSON.stringify({ event: 'global_turnover_change', data: payload }));
             }
         });
     } else if (channel === 'active_scanners_change') {
@@ -74,14 +74,14 @@ dbClient.on('notification', (msg) => {
                 client.send(JSON.stringify({ event: 'active_scanners_change', data: payload }));
             }
         });
-    } else if (channel === 'nb_articles_change') {
+    } else if (channel === 'global_articles_change') {
         console.log('Number of Articles Change:', payload);
         wss.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify({ event: 'nb_articles_change', data: payload }));
+                client.send(JSON.stringify({ event: 'global_articles_change', data: payload }));
             }
         });
-    } else if (channel === 'nb_articles_ai_change') {
+    } else if (channel === 'global_articles_ai_change') {
         console.log('Number of AI Articles Change:', payload);
         wss.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
