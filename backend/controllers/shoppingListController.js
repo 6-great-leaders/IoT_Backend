@@ -87,7 +87,7 @@ async function getShoppingListFromAI(req, res) {
         messages: [
           {
             role: "user",
-            content: `Generate a JSON response in the exact format below:
+             content: `Generate a JSON response in the exact format below:
 {
   "ingredients": [
     {
@@ -95,12 +95,19 @@ async function getShoppingListFromAI(req, res) {
       "name": "string",
       "price": "string",
       "quantity": "string",
-      "suggested": false
+      "suggested": boolean
     }
   ]
 }
-Use this structure strictly without any extra text, notes, or explanations. The ingredients should come from this product database: ${articles}. ${tag_request} The recipe is: ${recipe}. Add one relevant item to the list with the field "suggested" set to true.`
-          }
+Use this structure strictly without any extra text, notes, or explanations.
+
+Rules:
+1. The ingredients must come strictly from this product database: ${articles}.
+2. If the item is directly part of the recipe '${recipe}', set "suggested" to false.
+3. If the item is relevant but optional (like wine, spices, or other suggestions), set "suggested" to true.
+4. Add always one or two suggested items in the response.
+5. Always include all items (whether suggested or not) in the response.`
+        }
         ]
       },
       {
