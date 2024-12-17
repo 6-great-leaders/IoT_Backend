@@ -66,50 +66,72 @@ async function insertArticlesFromJSON(userId, articlesJSON) {
 
 async function getShoppingListFromAI(req, res) {
   const { recipe, budget, tags } = req.body;
+  console.log("Received request body:", req.body);
+  const GROQ_API_KEY = "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";
   const articles = JSON.stringify(await getShopArticlesForAI());
-  var tag_request = ""
-  // console.log(tags.length);
-  if (tags != null && tags.length >= 1) {
-    tag_request = `take in account my preferences : ${tags},`
+  console.log("Articles database:", articles);
+
+  let tag_request = "";
+
+  if (tags && tags.length >= 1) {
+    tag_request = `take in account my preferences: ${tags},`;
+    console.log("Tag request:", tag_request);
   }
-  // console.log(tag_request)
-  //console.log(articles);
+
   try {
+    console.log("Sending request to Groq API...");
     const response = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.GOOGLE_API_KEY}`,
+      "https://api.groq.com/openai/v1/chat/completions",
       {
-        contents: [
+        model: "llama3-8b-8192",
+        messages: [
           {
-            parts: [
-              {
-                  text: `Generate a concise JSON response with just the ingredients from this product database : ${articles},${tag_request} the quantity and their prices for the following french recipe: ${recipe}. Format it as: {"ingredients": [{"id": int, "name": "ingredient", "price": "price", "quantity": "quantity", "suggested": false}]}. add one item that could be relevant to this list with the field "suggested" set to true for this particular item. No additional explanations or notes.`
-              }
-            ]
+            role: "user",
+            content: `Generate a JSON response in the exact format below:
+{
+  "ingredients": [
+    {
+      "id": 0, 
+      "name": "string",
+      "price": "string",
+      "quantity": "string",
+      "suggested": false
+    }
+  ]
+}
+Use this structure strictly without any extra text, notes, or explanations. The ingredients should come from this product database: ${articles}. ${tag_request} The recipe is: ${recipe}. Add one relevant item to the list with the field "suggested" set to true.`
           }
         ]
       },
-      { headers: { 'Content-Type': 'application/json' } }
-      );
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${GROQ_API_KEY}`
+        }
+      }
+    );
 
-      // console.log(response.data.candidates[0].content.parts[0])
-      const generatedText = response.data.candidates[0].content.parts[0].text;
+    console.log("Groq API raw response:", response.data);
 
-      const cleanText = generatedText.replace(/```json|```|\n/g, '').trim();
-      const generatedJson = JSON.parse(cleanText);
+    const generatedText = response.data.choices[0].message.content;
+    console.log("Generated text from Groq API:", generatedText);
 
-      // console.log(generatedJson);
+    const cleanText = generatedText.replace(/```json|```|\n/g, '').trim();
+    console.log("Cleaned text:", cleanText);
 
-      const result = await updateUserShoppingList(generatedJson);
-      // console.log(result)
+    const generatedJson = JSON.parse(cleanText);
+    console.log("Parsed JSON:", generatedJson);
 
-      res.status(200).json(result);
-      //res.status(200).json(generatedJson.ingredients);
+    // Mettre à jour la liste des courses de l'utilisateur
+    const result = await updateUserShoppingList(generatedJson);
+    console.log("Updated shopping list result:", result);
+
+    res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching from API:", error.response ? error.response.data : error.message);
-    res.status(500).json({ error: 'Failed to retrieve shopping list from AI' });
+    console.error("Error fetching from GroqCloud API:", error.response ? error.response.data : error.message);
+    res.status(500).json({ error: "Failed to retrieve shopping list from AI", details: error.message });
   }
 }
-
 
 async function updateUserShoppingList(input) {
   try {
