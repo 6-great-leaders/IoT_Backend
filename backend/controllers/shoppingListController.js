@@ -16,7 +16,7 @@ async function getShopArticles(req, res) {
 
 async function getShopArticlesForAI() {
   try {
-    const result = await db.query('SELECT id, name, brand, price FROM shop_articles;');
+    const result = await db.query('SELECT id, name, brand, price, image FROM shop_articles;');
     return(result.rows)
   }
   catch (error) {
