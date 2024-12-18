@@ -175,16 +175,16 @@ SELECT setval('shop_articles_id_seq', (SELECT MAX(id) FROM shop_articles));
 
 -- Articles pour Pizza Bio Végétarienne
 INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
-('Pâte à Pizza BIO', 'BIO VILLAGE', 400, 1.50, 2, 3),
+('Pate a Pizza BIO', 'BIO VILLAGE', 400, 1.50, 2, 3),
 ('Sauce Tomate BIO', 'BIO VILLAGE', 200, 1.20, 3, 3),
-('Fromage Râpé BIO', 'BIO VILLAGE', 150, 2.50, 3, 4),
+('Fromage Rape BIO', 'BIO VILLAGE', 150, 2.50, 3, 4),
 ('Champignons BIO', 'BIO VILLAGE', 250, 3.00, 4, 3);
 
 -- Articles pour Pizza Reine non Bio
 INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
-('Pâte à Pizza', 'HERTA', 400, 1.20, 2, 3),
+('Pate a Pizza', 'HERTA', 400, 1.20, 2, 3),
 ('Sauce Tomate', 'HEINZ', 200, 1.00, 3, 3),
-('Fromage Râpé', 'ENTREMONT', 150, 2.00, 3, 4),
+('Fromage Rape', 'ENTREMONT', 150, 2.00, 3, 4),
 ('Jambon', 'HERTA', 300, 3.50, 1, 1);
 
 -- Articles pour Mojito avec alcool
@@ -193,16 +193,7 @@ INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
 ('Feuilles de Menthe', 'BIO VILLAGE', 50, 1.50, 5, 1),
 ('Citrons Vert BIO', 'BIO VILLAGE', 300, 2.50, 6, 1),
 ('Sucre', 'BEGHIN SAY', 1000, 1.00, 4, 4),
-('Vin rouge', 'Saint emilion', 1200, 20, 5, 7),
-('Lait Demi-Ecreme', 'CANDIA', 1000, 1.10, 2, 1),
-('Boeuf Hache', 'CHARAL', 400, 4.90, 3, 2),
-('Pommes de Terre', 'CARREFOUR', 2000, 2.90, 4, 3),
-('Carottes BIO', 'BIO VILLAGE', 1000, 2.20, 4, 5),
-('Chocolat Noir', 'LINDT', 100, 2.50, 7, 6),
-('Eau Pétillante', 'PERRIER', 1500, 1.20, 6, 2);
-
-
-INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES ('Tomates', 'AUCHAN', 20, 1.00, 5, 2);
+('Eau Petillante', 'PERRIER', 1500, 1.20, 6, 2);
 
 
 INSERT INTO scanner (id, state) VALUES (1, 'OFF');
