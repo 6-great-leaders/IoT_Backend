@@ -97,7 +97,7 @@ async function getShoppingListFromAI(req, res) {
       "price": double,
       "volume": 1,
       "suggested": boolean,
-      "image": "https://storage.googleapis.com/iot-images-genial/carton.png"
+      "image": "string"
     }
   ]
 }
