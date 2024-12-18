@@ -135,7 +135,7 @@ Rules:
     const result = await updateUserShoppingList(generatedJson);
     console.log("Updated shopping list result:", result);
 
-    res.status(200).json(generatedJson);
+    res.status(200).json(generatedJson.ingredients);
   } catch (error) {
     console.error("Error fetching from GroqCloud API:", error.response ? error.response.data : error.message);
     res.status(500).json({ error: "Failed to retrieve shopping list from AI", details: error.message });
