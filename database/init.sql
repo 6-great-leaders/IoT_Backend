@@ -162,6 +162,12 @@ INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
 ('Feuilles de Menthe', 'BIO VILLAGE', 50, 1.50, 5, 1),
 ('Citrons Vert BIO', 'BIO VILLAGE', 300, 2.50, 6, 1),
 ('Sucre', 'BEGHIN SAY', 1000, 1.00, 4, 4),
+('Vin rouge', 'Saint emilion', 1200, 20, 5, 7),
+('Lait Demi-Ecreme', 'CANDIA', 1000, 1.10, 2, 1),
+('Boeuf Hache', 'CHARAL', 400, 4.90, 3, 2),
+('Pommes de Terre', 'CARREFOUR', 2000, 2.90, 4, 3),
+('Carottes BIO', 'BIO VILLAGE', 1000, 2.20, 4, 5),
+('Chocolat Noir', 'LINDT', 100, 2.50, 7, 6),
 ('Eau Pétillante', 'PERRIER', 1500, 1.20, 6, 2);
 
 
