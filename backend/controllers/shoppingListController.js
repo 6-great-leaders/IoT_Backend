@@ -94,7 +94,7 @@ async function getShoppingListFromAI(req, res) {
       "id": 0, 
       "name": "string",
       "brand": "string",
-      "price": "string",
+      "price": double,
       "volume": 1,
       "suggested": boolean,
       "image": "https://www.flaticon.com/fr/icone-gratuite/produit-realise_102348"
