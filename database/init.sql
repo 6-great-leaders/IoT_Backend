@@ -45,7 +45,8 @@ CREATE TABLE IF NOT EXISTS shop_articles (
   weight INT, -- poids en grammes
   price FLOAT, -- in euros
   x FLOAT, -- coordinates of the article in the store
-  y FLOAT
+  y FLOAT,
+  image VARCHAR(255) DEFAULT 'https://storage.googleapis.com/iot-images-genial/carton.png'
 );
 
 -- calcul du turnover pour chaque scanner
@@ -174,26 +175,26 @@ EXECUTE FUNCTION notify_nb_articles_ai_change();
 SELECT setval('shop_articles_id_seq', (SELECT MAX(id) FROM shop_articles));
 
 -- Articles pour Pizza Bio Végétarienne
-INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
-('Pate a Pizza BIO', 'BIO VILLAGE', 400, 1.50, 2, 3),
-('Sauce Tomate BIO', 'BIO VILLAGE', 200, 1.20, 3, 3),
-('Fromage Rape BIO', 'BIO VILLAGE', 150, 2.50, 3, 4),
-('Champignons BIO', 'BIO VILLAGE', 250, 3.00, 4, 3);
+INSERT INTO shop_articles (name, brand, weight, price, x, y, image) VALUES
+('Pate a Pizza BIO', 'BIO VILLAGE', 400, 1.50, 2, 3, 'https://storage.googleapis.com/iot-images-genial/pate%20pizza%20BIO.png'),
+('Sauce Tomate BIO', 'BIO VILLAGE', 200, 1.20, 3, 3, 'https://storage.googleapis.com/iot-images-genial/sauce%20tomate%20BIO.png'),
+('Fromage Rape BIO', 'BIO VILLAGE', 150, 2.50, 3, 4, 'https://storage.googleapis.com/iot-images-genial/fromage%20rape%20BIO.png'),
+('Champignons BIO', 'BIO VILLAGE', 250, 3.00, 4, 3, 'https://storage.googleapis.com/iot-images-genial/champignons%20BIO.png');
 
 -- Articles pour Pizza Reine non Bio
-INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
-('Pate a Pizza', 'HERTA', 400, 1.20, 2, 3),
-('Sauce Tomate', 'HEINZ', 200, 1.00, 3, 3),
-('Fromage Rape', 'ENTREMONT', 150, 2.00, 3, 4),
-('Jambon', 'HERTA', 300, 3.50, 1, 1);
+INSERT INTO shop_articles (name, brand, weight, price, x, y, image) VALUES
+('Pate a Pizza', 'HERTA', 400, 1.20, 2, 3, 'https://storage.googleapis.com/iot-images-genial/pate%20pizza.jpg'),
+('Sauce Tomate', 'HEINZ', 200, 1.00, 3, 3, 'https://storage.googleapis.com/iot-images-genial/sauce%20tomate.jpg'),
+('Fromage Rape', 'ENTREMONT', 150, 2.00, 3, 4, 'https://storage.googleapis.com/iot-images-genial/fromage%20rape.jpg'),
+('Jambon', 'HERTA', 300, 3.50, 1, 1, 'https://storage.googleapis.com/iot-images-genial/jambon.jpg');
 
 -- Articles pour Mojito avec alcool
-INSERT INTO shop_articles (name, brand, weight, price, x, y) VALUES
-('Rhum Blanc', 'HAVANA CLUB', 700, 15.00, 5, 2),
-('Feuilles de Menthe', 'BIO VILLAGE', 50, 1.50, 5, 1),
-('Citrons Vert BIO', 'BIO VILLAGE', 300, 2.50, 6, 1),
-('Sucre', 'BEGHIN SAY', 1000, 1.00, 4, 4),
-('Eau Petillante', 'PERRIER', 1500, 1.20, 6, 2);
+INSERT INTO shop_articles (name, brand, weight, price, x, y, image) VALUES
+('Rhum Blanc', 'HAVANA CLUB', 700, 15.00, 5, 2, 'https://storage.googleapis.com/iot-images-genial/rhum.png'),
+('Feuilles de Menthe', 'BIO VILLAGE', 50, 1.50, 5, 1, 'https://storage.googleapis.com/iot-images-genial/menthe.jpg'),
+('Citrons Vert BIO', 'BIO VILLAGE', 300, 2.50, 6, 1, 'https://storage.googleapis.com/iot-images-genial/citron%20vert.jpg'),
+('Sucre', 'BEGHIN SAY', 1000, 1.00, 4, 4, 'https://storage.googleapis.com/iot-images-genial/sucre.jpg'),
+('Eau Petillante', 'PERRIER', 1500, 1.20, 6, 2, 'https://storage.googleapis.com/iot-images-genial/perrier.jpg');
 
 
 INSERT INTO scanner (id, state) VALUES (1, 'OFF');
