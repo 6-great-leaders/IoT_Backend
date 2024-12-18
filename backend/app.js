@@ -52,6 +52,7 @@ dbClient.connect()
     .catch(err => console.error('Erreur de connexion PostgreSQL:', err));
 
 dbClient.query('LISTEN active_scanners_change');
+dbClient.query('LISTEN scanner_state_change');
 dbClient.query('LISTEN global_turnover_change');
 dbClient.query('LISTEN global_articles_change');
 dbClient.query('LISTEN global_articles_ai_change');
@@ -72,6 +73,13 @@ dbClient.on('notification', (msg) => {
         wss.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify({ event: 'active_scanners_change', data: payload }));
+            }
+        });
+    } else if (channel === 'scanner_state_change') {
+        console.log('Scanner State Change:', payload);
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ event: 'scanner_state_change', data: payload }));
             }
         });
     } else if (channel === 'global_articles_change') {

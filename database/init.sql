@@ -94,6 +94,37 @@ AFTER UPDATE OF state ON scanner
 FOR EACH ROW
 EXECUTE FUNCTION notify_active_scanners();
 
+
+-- Fonction pour notifier les changements d'état des scanettes
+CREATE OR REPLACE FUNCTION notify_scanner_state_change()
+RETURNS TRIGGER AS $$
+DECLARE
+    state_change JSON;
+BEGIN
+    -- Construire un objet JSON avec les détails de la scanette modifiée
+    state_change := json_build_object(
+        'scanner_id', NEW.id,
+        'new_state', NEW.state,
+        'old_state', OLD.state
+    );
+
+    -- Envoyer une notification via pg_notify
+    PERFORM pg_notify(
+        'scanner_state_change',
+        state_change::text
+    );
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger sur les changements du champ `state`
+CREATE TRIGGER trigger_scanner_state_change
+AFTER UPDATE OF state ON scanner
+FOR EACH ROW
+WHEN (OLD.state IS DISTINCT FROM NEW.state) -- Se déclenche uniquement si `state` change
+EXECUTE FUNCTION notify_scanner_state_change();
+
 CREATE OR REPLACE FUNCTION notify_nb_articles_change()
 RETURNS TRIGGER AS $$
 DECLARE
