@@ -93,9 +93,11 @@ async function getShoppingListFromAI(req, res) {
     {
       "id": 0, 
       "name": "string",
+      "brand": "string",
       "price": "string",
-      "quantity": "string",
-      "suggested": boolean
+      "volume": 1,
+      "suggested": boolean,
+      "image": "https://www.flaticon.com/fr/icone-gratuite/produit-realise_102348"
     }
   ]
 }
@@ -133,7 +135,7 @@ Rules:
     const result = await updateUserShoppingList(generatedJson);
     console.log("Updated shopping list result:", result);
 
-    res.status(200).json(result);
+    res.status(200).json(generatedJson);
   } catch (error) {
     console.error("Error fetching from GroqCloud API:", error.response ? error.response.data : error.message);
     res.status(500).json({ error: "Failed to retrieve shopping list from AI", details: error.message });
