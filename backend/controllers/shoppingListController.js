@@ -97,7 +97,7 @@ async function getShoppingListFromAI(req, res) {
       "price": double,
       "volume": 1,
       "suggested": boolean,
-      "image": "https://www.flaticon.com/fr/icone-gratuite/produit-realise_102348"
+      "image": "https://storage.googleapis.com/iot-images-genial/carton.png"
     }
   ]
 }
