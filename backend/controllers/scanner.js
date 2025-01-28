@@ -1,6 +1,7 @@
 const axios = require('axios');
 const db = require('../db');
 require('dotenv').config();
+const {sortGroceriesList} = require('./controllerUtils')
 
 async function getArticlesScanner(req, res) {
   try {
@@ -8,7 +9,10 @@ async function getArticlesScanner(req, res) {
     const updatescanner = await db.query("UPDATE scanner SET list_id = 1, state = 'ACTIVE', last_healthcheck = NOW() WHERE id = 1");
     // get the articles in the list and their coordinates
     const result = await db.query('SELECT la.*, sa.x, sa.y FROM list_article la JOIN shop_articles sa ON la.article_id = sa.id WHERE la.user_id = 1;');
-    res.status(200).json(result.rows);
+    // TODO update the order algorithm
+
+    const newResult = sortGroceriesList(result.rows);
+    res.status(200).json(newResult);
   }
   catch (error) {
     console.error("Error fetching from DB:", error.response ? error.response.data : error.message);
@@ -125,4 +129,4 @@ setInterval(checkScannerHealth, 60000);
 checkScannerHealth()
 
 
-module.exports = { getArticlesScanner, scanArticle, healthcheck, checkout};
+module.exports = { getArticlesScanner, scanArticle, healthcheck, checkout };

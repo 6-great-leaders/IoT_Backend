@@ -2,7 +2,7 @@ const { Pool } = require('pg');
 
 const dbConfig = {
   user: '6gl',
-  host: 'db', // Use the service name defined in docker-compose
+  host: 'db', // Use the service name defined in docker-compose, to test in local, use localhost
   database: 'iot',
   password: '6gl',
   port: 5432,
