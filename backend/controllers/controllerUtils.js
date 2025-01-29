@@ -1,7 +1,8 @@
+// sortGroceriesList: Sorts the groceries list by the x coordinate of the grocery items
 function sortGroceriesList(l) {
-    const copiedList = [...l]; // Crée une copie de l'array initial
-    copiedList.sort((a, b) => a.x - b.x); // Trie la copie
-    return copiedList; // Retourne la liste triée
+    const copiedList = [...l];
+    copiedList.sort((a, b) => a.x - b.x);
+    return copiedList;
 }
 
 module.exports = {sortGroceriesList};
