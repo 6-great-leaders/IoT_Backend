@@ -91,25 +91,25 @@ jobs:
         run: terraform apply -var="project_id=$PROJECT_ID" -var="ssh_public_key=$SSH_KEY" -auto-approve
         working-directory: ./infra
   
-      e2e-tests:
-        runs-on: ubuntu-latest
-        needs: deploy  # Attendre que le job de déploiement soit terminé
-    
-        steps:
-          - name: Checkout repository
-            uses: actions/checkout@v2
-    
-          - name: Install Newman (Postman CLI)
-            run: npm install -g newman
-    
-          - name: Wait for infrastructure to be ready
-            run: sleep 420  # Attendre 7 minutes (420 secondes)
-    
-          - name: Run Postman E2E tests
-            env:
-              POSTMAN_API_KEY_B64: ${{ secrets.POSTMAN_API_KEY_B64 }}
-            run: |
-              POSTMAN_API_KEY=$(echo "$POSTMAN_API_KEY_B64" | base64 -d)
-              newman run https://api.getpostman.com/collections/27376445-a6339afc-5470-404d-8715-49c3f0d9df58?apikey=$POSTMAN_API_KEY
-      
-      
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: deploy  # Attendre que le job de déploiement soit terminé
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Newman (Postman CLI)
+        run: npm install -g newman
+
+      - name: Wait for infrastructure to be ready
+        run: sleep 420  # Attendre 7 minutes (420 secondes)
+
+      - name: Run Postman E2E tests
+        env:
+          POSTMAN_API_KEY_B64: ${{ secrets.POSTMAN_API_KEY_B64 }}
+        run: |
+          POSTMAN_API_KEY=$(echo "$POSTMAN_API_KEY_B64" | base64 -d)
+          newman run https://api.getpostman.com/collections/27376445-a6339afc-5470-404d-8715-49c3f0d9df58?apikey=$POSTMAN_API_KEY
+  
+  
