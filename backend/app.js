@@ -41,7 +41,7 @@ wss.on('connection', (ws) => {
 
 const dbClient = new Client({
   user: '6gl',
-  host: 'db', // Use the service name defined in docker-compose, to test in local, use localhost
+  host: 'localhost', // Use the service name defined in docker-compose, to test in local, use localhost
   database: 'iot',
   password: '6gl',
   port: 5432,
